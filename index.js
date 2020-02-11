@@ -134,7 +134,8 @@ class Select2 extends Component {
       }
     });
     this.setState({ data, preSelectedItem });
-    onRemoveItem && onRemoveItem(selectedIds, selectedObjectItems);
+    this.props.onRemoveItem &&
+      this.props.onRemoveItem(selectedIds, selectedObjectItems);
   };
 
   keyExtractor = (item, idx) => idx.toString();
