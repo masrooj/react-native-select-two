@@ -118,7 +118,7 @@ class Select2 extends Component {
     this.setState({ data, selectedItem });
   };
 
-  onSelectedRemoveTag = () => {
+  onSelectedRemoveTag = tag => {
     let preSelectedItem = [];
     let selectedIds = [],
       selectedObjectItems = [];
@@ -328,7 +328,7 @@ class Select2 extends Component {
                   return (
                     <ChipComponent
                       key={index}
-                      onRemoveTag={this.onSelectedRemoveTag}
+                      onRemoveTag={() => this.onSelectedRemoveTag(tag)}
                       item={tag}
                     />
                   );
@@ -336,7 +336,7 @@ class Select2 extends Component {
                 return (
                   <TagItem
                     key={index}
-                    onRemoveTag={this.onSelectedRemoveTag}
+                    onRemoveTag={() => this.onSelectedRemoveTag(tag)}
                     tagName={tag.name}
                   />
                 );
