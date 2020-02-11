@@ -88,5 +88,6 @@ class CreateNewAppointment extends Component {
 | **buttonTextStyle**       | _Object_       | none                            | Set custom button text style                                                                |
 | **buttonStyle**           | _Object_       | none                            | Set custom button style                                                                     |
 | **RowComponent**          | _Component_    | none                            | custom component to display item list                                                       |
+| **ChipComponent**         | _Component_    | none                            | custom component to display selected item list                                              |
 
 **MIT Licensed**
