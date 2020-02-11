@@ -31,7 +31,8 @@ class Select2 extends Component {
     buttonTextStyle: {},
     buttonStyle: {},
     showSearchBox: true,
-    RowComponent: null
+    RowComponent: null,
+    ChipComponent: null
   };
   state = {
     show: false,
@@ -116,6 +117,26 @@ class Select2 extends Component {
     });
     this.setState({ data, selectedItem });
   };
+
+  onSelectedRemoveTag = () => {
+    let preSelectedItem = [];
+    let selectedIds = [],
+      selectedObjectItems = [];
+    let { data } = this.state;
+    data.map(item => {
+      if (item.id === tag.id) {
+        item.checked = false;
+      }
+      if (item.checked) {
+        preSelectedItem.push(item);
+        selectedIds.push(item.id);
+        selectedObjectItems.push(item);
+      }
+    });
+    this.setState({ data, preSelectedItem });
+    onRemoveItem && onRemoveItem(selectedIds, selectedObjectItems);
+  };
+
   keyExtractor = (item, idx) => idx.toString();
   renderItem = ({ item, idx }) => {
     let { colorTheme, isSelectSingle, RowComponent } = this.props;
@@ -302,28 +323,20 @@ class Select2 extends Component {
           ) : (
             <View style={styles.tagWrapper}>
               {preSelectedItem.map((tag, index) => {
+                let { ChipComponent } = this.props;
+                if (ChipComponent) {
+                  return (
+                    <ChipComponent
+                      key={index}
+                      onRemoveTag={this.onSelectedRemoveTag}
+                      item={item}
+                    />
+                  );
+                }
                 return (
                   <TagItem
                     key={index}
-                    onRemoveTag={() => {
-                      let preSelectedItem = [];
-                      let selectedIds = [],
-                        selectedObjectItems = [];
-                      let { data } = this.state;
-                      data.map(item => {
-                        if (item.id === tag.id) {
-                          item.checked = false;
-                        }
-                        if (item.checked) {
-                          preSelectedItem.push(item);
-                          selectedIds.push(item.id);
-                          selectedObjectItems.push(item);
-                        }
-                      });
-                      this.setState({ data, preSelectedItem });
-                      onRemoveItem &&
-                        onRemoveItem(selectedIds, selectedObjectItems);
-                    }}
+                    onRemoveTag={this.onSelectedRemoveTag}
                     tagName={tag.name}
                   />
                 );
