@@ -329,7 +329,7 @@ class Select2 extends Component {
                     <ChipComponent
                       key={index}
                       onRemoveTag={this.onSelectedRemoveTag}
-                      item={item}
+                      item={tag}
                     />
                   );
                 }
