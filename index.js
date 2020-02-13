@@ -208,7 +208,8 @@ class Select2 extends Component {
       selectedTitleStyle,
       buttonTextStyle,
       buttonStyle,
-      showSearchBox
+      showSearchBox,
+      displayKey
     } = this.props;
     let { show, selectedItem, preSelectedItem } = this.state;
     return (
@@ -336,7 +337,7 @@ class Select2 extends Component {
                 { color: "#333" }
               ]}
             >
-              {preSelectedItem[0].name}
+              {preSelectedItem[0][displayKey]}
             </Text>
           ) : (
             <View style={styles.tagWrapper}>
@@ -355,7 +356,7 @@ class Select2 extends Component {
                   <TagItem
                     key={index}
                     onRemoveTag={() => this.onSelectedRemoveTag(tag)}
-                    tagName={tag.name}
+                    tagName={tag[displayKey]}
                   />
                 );
               })}
