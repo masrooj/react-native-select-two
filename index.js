@@ -32,7 +32,9 @@ class Select2 extends Component {
     buttonStyle: {},
     showSearchBox: true,
     RowComponent: null,
-    ChipComponent: null
+    ChipComponent: null,
+    displayKey: "name",
+    uniqueKey: "id"
   };
   state = {
     show: false,
@@ -64,11 +66,12 @@ class Select2 extends Component {
 
   get dataRender() {
     let { data, keyword } = this.state;
+    let { displayKey } = this.props;
     let listMappingKeyword = [];
     data.map(item => {
       if (
         utilities
-          .changeAlias(item.name)
+          .changeAlias(item[displayKey])
           .includes(utilities.changeAlias(keyword))
       ) {
         listMappingKeyword.push(item);
@@ -84,10 +87,12 @@ class Select2 extends Component {
 
   cancelSelection() {
     let { data, preSelectedItem } = this.state;
+    let { uniqueKey } = this.props;
+
     data.map(item => {
       item.checked = false;
       for (let _selectedItem of preSelectedItem) {
-        if (item.id === _selectedItem.id) {
+        if (item[uniqueKey] === _selectedItem[uniqueKey]) {
           item.checked = true;
           break;
         }
@@ -104,9 +109,12 @@ class Select2 extends Component {
   onItemSelected = (item, isSelectSingle) => {
     let selectedItem = [];
     let { data } = this.state;
+
+    let { uniqueKey } = this.props;
+
     item.checked = !item.checked;
     for (let index in data) {
-      if (data[index].id === item.id) {
+      if (data[index][uniqueKey] === item[uniqueKey]) {
         data[index] = item;
       } else if (isSelectSingle) {
         data[index].checked = false;
@@ -123,13 +131,16 @@ class Select2 extends Component {
     let selectedIds = [],
       selectedObjectItems = [];
     let { data } = this.state;
+
+    let { uniqueKey } = this.props;
+
     data.map(item => {
-      if (item.id === tag.id) {
+      if (item[uniqueKey] === tag[uniqueKey]) {
         item.checked = false;
       }
       if (item.checked) {
         preSelectedItem.push(item);
-        selectedIds.push(item.id);
+        selectedIds.push(item[uniqueKey]);
         selectedObjectItems.push(item);
       }
     });
@@ -151,6 +162,8 @@ class Select2 extends Component {
       );
     }
 
+    const { displayKey } = this.props;
+
     return (
       <TouchableOpacity
         key={idx}
@@ -158,7 +171,9 @@ class Select2 extends Component {
         activeOpacity={0.7}
         style={styles.itemWrapper}
       >
-        <Text style={[styles.itemText, this.defaultFont]}>{item.name}</Text>
+        <Text style={[styles.itemText, this.defaultFont]}>
+          {item[displayKey]}
+        </Text>
         <Icon
           style={styles.itemIcon}
           name={item.checked ? "check-circle-outline" : "radiobox-blank"}
@@ -284,10 +299,12 @@ class Select2 extends Component {
               <Button
                 defaultFont={this.defaultFont}
                 onPress={() => {
+                  let { uniqueKey } = this.props;
                   let selectedIds = [],
                     selectedObjectItems = [];
+
                   selectedItem.map(item => {
-                    selectedIds.push(item.id);
+                    selectedIds.push(item[uniqueKey]);
                     selectedObjectItems.push(item);
                   });
                   onSelect && onSelect(selectedIds, selectedObjectItems);
