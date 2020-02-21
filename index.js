@@ -274,6 +274,7 @@ class Select2 extends Component {
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
               ListEmptyComponent={this.renderEmpty}
+              keyboardShouldPersistTaps={"always"}
             />
 
             <View style={styles.buttonWrapper}>
